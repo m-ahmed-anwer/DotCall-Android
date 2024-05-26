@@ -1,6 +1,8 @@
 package com.example.dotcall_android;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,4 +23,15 @@ public class LaunchScreen extends AppCompatActivity {
             return insets;
         });
     }
+
+    public void createAccount(View v){
+        Intent i = new Intent(this, CreateAccount.class);
+        startActivity(i);
+    }
+
+    public void login(View v){
+        Intent i = new Intent(this, Login.class);
+        startActivity(i);
+    }
+
 }

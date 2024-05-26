@@ -4,13 +4,7 @@
     <item>
         <shape android:shape="rectangle" >
             <corners android:radius="23dp"/>
-            <gradient
-                android:startColor = "@color/launchLight"
-                android:centerColor="@color/launchLight"
-                android:endColor = "@color/launchLight"
-                android:angle = "180"
-                android:gradientRadius="16dp"
-                android:type = "linear" />
+            <solid android:color="@color/launchLight"/>
         </shape>
     </item>
 </selector>

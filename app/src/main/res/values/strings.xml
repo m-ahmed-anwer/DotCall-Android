@@ -6,24 +6,33 @@
     <string name="title_notifications">Notifications</string>
     <!-- Strings related to login -->
     <string name="prompt_phoneNumber">Phone number</string>
+    <string name="prompt_email">Your email</string>
+    <string name="prompt_name">Your full name</string>
+    <string name="prompt_passwordR">Password</string>
+    <string name="prompt_passwordConfirm">Confirm Password</string>
     <string name="prompt_otp">OTP</string>
     <string name="prompt_password">Your password</string>
     <string name="action_log_in">Login</string>
     <string name="action_otp">Verify</string>
+    <string name="action_sign_up_otp">Send OTP</string>
     <string name="action_create">Create Account</string>
+    <string name="action_create_user">Create User</string>
     <string name="experince_the">Experience the</string>
     <string name="clear_conversation">Clear Conversation</string>
     <string name="anywhere">Anywhere!</string>
     <string name="welcome">Welcome Back!</string>
+    <string name="welcomeCreate">Create Your Account</string>
+    <string name="welcomeSignup">Hello Ahmed!</string>
     <string name="otp">OTP Verification</string>
     <string name="enter_login">Please enter your phone number and password</string>
+    <string name="enter_create">Connect, Create, Communicate</string>
+    <string name="enter_signup">Please enter your phone number</string>
     <string name="enter_otp">Enter the code sent to +94768242884</string>
 
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
     <string name="action_sign_in_short">Sign in</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
