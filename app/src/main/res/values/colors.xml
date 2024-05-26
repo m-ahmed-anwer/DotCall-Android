@@ -2,4 +2,19 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="linkColor">#3F72AF</color>
+    <color name="themeIcon">#112D4E</color>
+    <color name="bgColorlight">#F7F5F4</color>
+    <color name="bgColorDark">#1C1C1E</color>
+    <color name="buttonlight">#D1D7E1</color>
+    <color name="buttonDark">#3C3C3C</color>
+    <color name="iosDark">#000000</color>
+    <color name="iosLight">#F4F4F4</color>
+    <color name="iosBoxLight">#FEFFFF</color>
+    <color name="iosBoxDark">#1C1C1E</color>
+    <color name="launchLight">#D9E2F0</color>
+    <color name="launchDark">#38383A</color>
+    <color name="themeTextLight">#112D4E</color>
+    <color name="themeTextDark">#FEFFFF</color>
+    <color name="linkText">#3F72AF</color>
 </resources>
