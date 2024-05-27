@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "503502281954",
+    "project_id": "dotcall-a0047",
+    "storage_bucket": "dotcall-a0047.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503502281954:android:cb2950d3e75aa8dfb6d2bb",
+        "android_client_info": {
+          "package_name": "com.example.dotcall_android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9oN1lDy7-Lm9Qb_kn9XDl3V6gywlu1Ak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

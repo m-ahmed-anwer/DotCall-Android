@@ -52,27 +52,24 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TextFields" />
 
-    <Button
-        android:id="@+id/otpButton"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="start"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="64dp"
-        android:backgroundTint="@color/themeIcon"
-        android:onClick="performVerification"
-        android:text="@string/action_otp"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:cornerRadius="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNum"
-        app:layout_constraintVertical_bias="0.191" />
+        <Button
+            android:id="@+id/otpButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="start"
+            android:layout_marginTop="60dp"
+            android:backgroundTint="@color/themeIcon"
+            android:onClick="performVerification"
+            android:text="@string/action_otp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:cornerRadius="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otpText" />
 
-    <TextView
+        <TextView
         android:id="@+id/instructionotp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

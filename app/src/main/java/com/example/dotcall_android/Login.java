@@ -1,6 +1,5 @@
 package com.example.dotcall_android;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +11,31 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.concurrent.TimeUnit;
 
 
 public class Login extends AppCompatActivity {
@@ -35,6 +53,7 @@ public class Login extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        FirebaseApp.initializeApp(this);
 
 //        EditText phoneEditText = findViewById(R.id.phoneNum);
 //        EditText passwordEditText = findViewById(R.id.password);
@@ -79,29 +98,124 @@ public class Login extends AppCompatActivity {
         phoneNum =((EditText)findViewById(R.id.phoneNum)).getText().toString().trim();
         password= ((EditText)findViewById(R.id.password)).getText().toString().trim();
 
-        Intent i = new Intent(this, OtpVerification.class);
         if (phoneNum.isEmpty()) {
             progressDialog.dismiss();
-            error("Phone Number cannot be empty");
+            toast("Phone Number cannot be empty");
             return;
         }
         if (password.isEmpty()) {
             progressDialog.dismiss();
-            error("Password cannot be empty");
+            toast("Password cannot be empty");
             return;
         }
         if (password.length() < 6) {
             progressDialog.dismiss();
-            error("Password must be at least 6 characters long");
+            toast("Password must be at least 6 characters long");
             return;
         }
-        i.putExtra("phoneNum", phoneNum);
-        progressDialog.dismiss();
-        startActivity(i);
+
+        loginUser(phoneNum,password);
+//        progressDialog.dismiss();
+
+
     }
 
-    public void error(String message){
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    private void loginUser(String phoneNumber, String password) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("phoneNumber", phoneNumber);
+            jsonObject.put("password", password);
+        } catch (JSONException e) {
+            progressDialog.dismiss();
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, "https://dot-call-a7ff3d8633ee.herokuapp.com/users/login", jsonObject, new Response.Listener<JSONObject>(){
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Handle the response from the server
+                        try {
+                            boolean success = response.getBoolean("success");
+                            if (success) {
+                                signInFirebase(phoneNumber);
+                            } else {
+                                String message = response.getString("message");
+                                progressDialog.dismiss();
+                                toast(message);
+                            }
+                        } catch (JSONException e) {
+                            progressDialog.dismiss();
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String errorMessage = "Error occurred";
+                        if (error.networkResponse != null && error.networkResponse.data != null) {
+                            try {
+                                String errorResponse = new String(error.networkResponse.data, "UTF-8");
+                                JSONObject jsonObject = new JSONObject(errorResponse);
+                                errorMessage = jsonObject.getString("message");
+                            } catch (UnsupportedEncodingException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        progressDialog.dismiss();
+                        toast(errorMessage);
+                    }
+
+                });
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    private void signInFirebase(String phoneNum){
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNum,
+                60,
+                TimeUnit.SECONDS,
+                this,
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                        progressDialog.dismiss();
+                        toast("Verification Completed");
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        progressDialog.dismiss();
+                        if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                            toast("Invalid Mobile Number Format Start with + ");
+                        }else if (e instanceof FirebaseTooManyRequestsException) {
+                            toast("Quota Over");
+                        }
+                    }
+
+                    @Override
+                    public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                        progressDialog.dismiss();
+                        toast("Verification code sent to mobile");
+                        Intent i = new Intent(Login.this, OtpVerification.class);
+                        i.putExtra("phoneNum", phoneNum);
+                        i.putExtra("verificationId", verificationId);
+                        startActivity(i);
+                        finish();
+                    }
+                });
+    }
+
+
+
+
+
+    public void toast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
     private void hideKeyboard() {

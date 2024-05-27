@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,10 +20,21 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.util.concurrent.TimeUnit;
+
 public class CreateAccountPhoneNumber extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
-    String phoneNum=null;
+    String phoneNum="";
+    String name ="";
+    String email ="";
+    String password="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +47,10 @@ public class CreateAccountPhoneNumber extends AppCompatActivity {
             return insets;
         });
 
-        String name = getIntent().getStringExtra("name");
+        name = getIntent().getStringExtra("name");
+        email = getIntent().getStringExtra("email");
+        password = getIntent().getStringExtra("password");
+
         if (name != null) {
             String text = "Hello "+name+"!";
             ((TextView) findViewById(R.id.welcome)).setText(text);
@@ -77,22 +92,60 @@ public class CreateAccountPhoneNumber extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        phoneNum =((EditText)findViewById(R.id.phoneNum)).getText().toString().trim();
+        phoneNum =((EditText)findViewById(R.id.phoneNumber)).getText().toString().trim();
 
-        Intent i = new Intent(this, OtpVerification.class);
         if (phoneNum.isEmpty()) {
             progressDialog.dismiss();
-            error("Phone Number cannot be empty");
+            toast("Phone Number cannot be empty");
             return;
         }
-        i.putExtra("phoneNum", phoneNum);
-        progressDialog.dismiss();
-        startActivity(i);
+
+        signUnFirebase(phoneNum,name,email,password);
+
     }
 
+    private void signUnFirebase(String phone, String name,String email,String password){
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phone,
+                60,
+                TimeUnit.SECONDS,
+                this,
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
-    private void error(String message){
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                        progressDialog.dismiss();
+                        toast("Verification Completed");
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        progressDialog.dismiss();
+                        if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                            toast("Invalid Mobile Number Format Start with + ");
+                        }else if (e instanceof FirebaseTooManyRequestsException) {
+                            toast("Quota Over");
+                        }
+                    }
+
+                    @Override
+                    public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                        progressDialog.dismiss();
+                        toast("Verification code sent to mobile");
+                        Intent i = new Intent(CreateAccountPhoneNumber.this, OtpVerification.class);
+                        i.putExtra("name", name);
+                        i.putExtra("email", email);
+                        i.putExtra("password", password);
+                        i.putExtra("phoneNum", phone);
+                        i.putExtra("verificationId", verificationId);
+                        startActivity(i);
+                        finish();
+                    }
+                });
+    }
+
+    private void toast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
 

@@ -1,6 +1,5 @@
 package com.example.dotcall_android;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +17,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CreateAccount extends AppCompatActivity {
 
@@ -80,45 +88,82 @@ public class CreateAccount extends AppCompatActivity {
         password = ((EditText) findViewById(R.id.password)).getText().toString().trim();
         confirmPassword = ((EditText) findViewById(R.id.confirmpassword)).getText().toString().trim();
 
-        Intent i = new Intent(this, CreateAccountPhoneNumber.class);
-
         if (email.isEmpty()) {
             progressDialog.dismiss();
-            error("Email cannot be empty");
+            toast("Email cannot be empty");
             return;
         }
         if (fullName.isEmpty()) {
             progressDialog.dismiss();
-            error("Full Name cannot be empty");
+            toast("Full Name cannot be empty");
             return;
         }
         if (password.isEmpty()) {
             progressDialog.dismiss();
-            error("Password cannot be empty");
+            toast("Password cannot be empty");
             return;
         }
         if (!isValidEmail(email)) {
             progressDialog.dismiss();
-            error("Invalid email format");
+            toast("Invalid email format");
             return;
         }
         if (password.length() < 6) {
             progressDialog.dismiss();
-            error("Password must be at least 6 characters long");
+            toast("Password must be at least 6 characters long");
             return;
         }
         if (!password.equals(confirmPassword)) {
             progressDialog.dismiss();
-            error("Passwords do not match");
+            toast("Passwords do not match");
             return;
         }
-        i.putExtra("name", fullName);
-        progressDialog.dismiss();
-        startActivity(i);
+
+        checkEmailAvailability(email,fullName,password);
+
     }
 
+    private void checkEmailAvailability(String email,String fullName,String password) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("email", email);
+        } catch (JSONException e) {
+            progressDialog.dismiss();
+            e.printStackTrace();
+        }
 
-    public void error(String message){
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, "https://dot-call-a7ff3d8633ee.herokuapp.com/users/email", jsonObject, new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        progressDialog.dismiss();
+                        try {
+                            boolean success = response.getBoolean("success");
+                            if (success) {
+                                Intent i = new Intent(CreateAccount.this, CreateAccountPhoneNumber.class);
+                                i.putExtra("email", email);
+                                i.putExtra("name", fullName);
+                                i.putExtra("password", password);
+                                startActivity(i);
+                            } else {
+                                toast("User with this email is already registered");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                        toast("Error: " + error.getMessage());
+                    }
+                });
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    public void toast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
