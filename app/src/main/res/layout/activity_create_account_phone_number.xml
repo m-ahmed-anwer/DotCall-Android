@@ -5,9 +5,17 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
+    android:background="@color/white"
     tools:context=".CreateAccountPhoneNumber">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp">
 
     <TextView
         android:id="@+id/welcome"
@@ -31,7 +39,7 @@
         android:id="@+id/prompt_phoneNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="204dp"
+        android:layout_marginTop="200dp"
         android:autofillHints="@string/prompt_phoneNumber"
         android:hint="@string/prompt_phoneNumber"
         android:inputType="phone"
@@ -43,26 +51,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
         android:id="@+id/login"
-        android:layout_width="371dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="start"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="64dp"
         android:backgroundTint="@color/themeIcon"
-        android:enabled="false"
         android:onClick="performSignupOTP"
         android:text="@string/action_sign_up_otp"
         android:textColor="@color/white"
         android:textSize="24sp"
-        app:cornerRadius="15dp"
+        app:cornerRadius="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prompt_phoneNumber"
-        app:layout_constraintVertical_bias="0.307" />
+        app:layout_constraintVertical_bias="0.139" />
 
     <TextView
         android:id="@+id/instructionWelcome"
@@ -79,8 +87,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcome"
-        app:layout_constraintVertical_bias="0.107" />
-
+        app:layout_constraintVertical_bias="0.021" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -96,7 +103,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
-
+</androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -105,6 +112,7 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
