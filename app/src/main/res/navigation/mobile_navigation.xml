@@ -7,19 +7,24 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.dotcall_android.ui.home.HomeFragment"
+        android:name="com.example.dotcall_android.ui.summary.SummaryFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_summary" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.dotcall_android.ui.gallery.GalleryFragment"
+        android:id="@+id/nav_settings"
+        android:name="com.example.dotcall_android.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/nav_recents"
+        android:name="com.example.dotcall_android.ui.recent.RecentFragment"
         android:label="@string/menu_recents"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_recents" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.dotcall_android.ui.slideshow.SlideshowFragment"
+        android:id="@+id/nav_contacts"
+        android:name="com.example.dotcall_android.ui.contacts.ContactFragment"
         android:label="@string/menu_contacts"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_contact" />
 </navigation>

@@ -2,7 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:allowBackup="true"
@@ -14,30 +20,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DotCallAndroid"
         tools:targetApi="31">
+
         <activity
             android:name=".Summary"
             android:exported="true"
             android:label="@string/title_activity_summary"
-            android:theme="@style/Theme.DotCallAndroid.NoActionBar">
+            android:theme="@style/Theme.DotCallAndroid.NoActionBar"/>
+        <activity
+            android:name=".CreateAccount"
+            android:exported="false" />
+        <activity
+            android:name=".LaunchScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".CreateAccountPhoneNumber"
-            android:exported="false" />
-        <activity
-            android:name=".CreateAccount"
-            android:exported="false" />
-        <activity
-            android:name=".OtpVerification"
-            android:exported="false" />
-        <activity
-            android:name=".LaunchScreen"
-            android:exported="true">
-
         </activity>
         <activity
             android:name=".Login"

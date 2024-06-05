@@ -56,13 +56,13 @@
         app:layout_constraintVertical_bias="0.028" />
 
     <EditText
-        android:id="@+id/phoneNum"
+        android:id="@+id/email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
-        android:autofillHints="@string/prompt_phoneNumber"
-        android:hint="@string/prompt_phoneNumber"
-        android:inputType="phone"
+        android:autofillHints="@string/prompt_email"
+        android:hint="@string/prompt_email"
+        android:inputType="textEmailAddress"
         android:paddingHorizontal="10dp"
         android:paddingVertical="18dp"
         android:selectAllOnFocus="true"
@@ -87,7 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNum" />
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <Button
         android:id="@+id/login"

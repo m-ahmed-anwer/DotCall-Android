@@ -1,10 +1,12 @@
 package com.example.dotcall_android;
 
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.example.dotcall_android.manager.UserManager;
+import com.example.dotcall_android.model.User;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -30,22 +32,37 @@ public class Summary extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarSummary.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
+
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_recents, R.id.nav_contacts)
                 .setOpenableLayout(drawer)
                 .build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_summary);
+
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        // Update header text
+        View headerView = navigationView.getHeaderView(0);
+        TextView nameTextView = headerView.findViewById(R.id.name);
+        TextView emailTextView = headerView.findViewById(R.id.email);
+
+        User user = UserManager.getInstance().getCurrentUser();
+
+        nameTextView.setText(user.getName());
+        emailTextView.setText(user.getEmail());
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.summary, menu);
+
+        //getMenuInflater().inflate(R.menu.summary, menu);
         return true;
     }
 

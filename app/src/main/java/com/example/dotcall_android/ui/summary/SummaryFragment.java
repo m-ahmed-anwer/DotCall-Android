@@ -1,4 +1,4 @@
-package com.example.dotcall_android.ui.slideshow;
+package com.example.dotcall_android.ui.summary;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.dotcall_android.databinding.FragmentSlideshowBinding;
+import com.example.dotcall_android.databinding.FragmentSummaryBinding;
 
-public class SlideshowFragment extends Fragment {
+public class SummaryFragment extends Fragment {
 
-    private FragmentSlideshowBinding binding;
+    private FragmentSummaryBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SlideshowViewModel slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
+        SummaryViewModel summaryViewModel =
+                new ViewModelProvider(this).get(SummaryViewModel.class);
 
-        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        binding = FragmentSummaryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textSlideshow;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = binding.textSummary;
+//        summaryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

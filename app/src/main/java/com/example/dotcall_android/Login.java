@@ -1,5 +1,6 @@
 package com.example.dotcall_android;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,10 +25,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dotcall_android.manager.UserManager;
+import com.example.dotcall_android.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
@@ -41,7 +51,7 @@ import java.util.concurrent.TimeUnit;
 public class Login extends AppCompatActivity {
 
     private  ProgressDialog progressDialog;
-    String phoneNum=null;
+    String email =null;
     String password=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,17 +105,23 @@ public class Login extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        phoneNum =((EditText)findViewById(R.id.phoneNum)).getText().toString().trim();
+        email =((EditText)findViewById(R.id.email)).getText().toString().trim();
         password= ((EditText)findViewById(R.id.password)).getText().toString().trim();
 
-        if (phoneNum.isEmpty()) {
+        if (email.isEmpty()) {
             progressDialog.dismiss();
-            toast("Phone Number cannot be empty");
+            toast("Email cannot be empty");
             return;
         }
         if (password.isEmpty()) {
             progressDialog.dismiss();
             toast("Password cannot be empty");
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            progressDialog.dismiss();
+            toast("Invalid email format");
             return;
         }
         if (password.length() < 6) {
@@ -114,16 +130,20 @@ public class Login extends AppCompatActivity {
             return;
         }
 
-        loginUser(phoneNum,password);
+        loginUser(email,password);
 //        progressDialog.dismiss();
 
 
     }
 
+    private boolean isValidEmail(String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
     private void loginUser(String phoneNumber, String password) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("phoneNumber", phoneNumber);
+            jsonObject.put("email", email);
             jsonObject.put("password", password);
         } catch (JSONException e) {
             progressDialog.dismiss();
@@ -139,7 +159,20 @@ public class Login extends AppCompatActivity {
                         try {
                             boolean success = response.getBoolean("success");
                             if (success) {
-                                signInFirebase(phoneNumber);
+                            JSONObject userObj = response.getJSONObject("user");
+                            String id = userObj.getString("_id");
+                            String name = userObj.getString("name");
+                            String email = userObj.getString("email");
+                            String username = userObj.getString("username");
+                            String createdAt = userObj.getString("createdAt");
+                            JSONObject generalSettingsObj = userObj.getJSONObject("generalSettings");
+                            String notification = generalSettingsObj.getString("notification");
+                            String faceId = generalSettingsObj.getString("faceId");
+                            String haptic = generalSettingsObj.getString("haptic");
+
+                            User user = new User(id,name,email,username,createdAt,notification,faceId,haptic);
+                            UserManager.getInstance().setCurrentUser(user);
+                            signInFirebase(email,password);
                             } else {
                                 String message = response.getString("message");
                                 progressDialog.dismiss();
@@ -173,43 +206,35 @@ public class Login extends AppCompatActivity {
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
-    private void signInFirebase(String phoneNum){
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNum,
-                60,
-                TimeUnit.SECONDS,
-                this,
-                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
+    private void signInFirebase(String email, String password) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                        progressDialog.dismiss();
-                        toast("Verification Completed");
-                    }
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
 
-                    @Override
-                    public void onVerificationFailed(@NonNull FirebaseException e) {
-                        progressDialog.dismiss();
-                        if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                            toast("Invalid Mobile Number Format Start with + ");
-                        }else if (e instanceof FirebaseTooManyRequestsException) {
-                            toast("Quota Over");
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            if (user.isEmailVerified()) {
+                                progressDialog.dismiss();
+                                Toast.makeText(Login.this, "Authentication success.",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                progressDialog.dismiss();
+                                new AlertDialog.Builder(Login.this)
+                                        .setTitle("Email not verified")
+                                        .setMessage("Please verify your email before Login.")
+                                        .setPositiveButton(android.R.string.ok, null)
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            }
+                        } else {
+                            progressDialog.dismiss();
+                            Toast.makeText(Login.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
                         }
-                    }
-
-                    @Override
-                    public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
-                        progressDialog.dismiss();
-                        toast("Verification code sent to mobile");
-                        Intent i = new Intent(Login.this, OtpVerification.class);
-                        i.putExtra("phoneNum", phoneNum);
-                        i.putExtra("verificationId", verificationId);
-                        startActivity(i);
-                        finish();
                     }
                 });
     }
-
 
 
 
