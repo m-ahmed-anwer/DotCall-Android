@@ -9,8 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dotcall_android.databinding.FragmentSummaryBinding;
+import com.example.dotcall_android.model.Summary;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SummaryFragment extends Fragment {
 
@@ -24,8 +30,17 @@ public class SummaryFragment extends Fragment {
         binding = FragmentSummaryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-//        final TextView textView = binding.textSummary;
-//        summaryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        RecyclerView summary = binding.summary;
+
+        List<Summary> summaries = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            summaries.add(new Summary("Call Receiver Name " + i, "Call Receiver Username " + i, "Recent Summary " + i, "Recent Time " + i));
+        }
+
+        SummaryAdapter adapter = new SummaryAdapter(summaries);
+        summary.setLayoutManager(new LinearLayoutManager(getContext()));
+        summary.setAdapter(adapter);
+
         return root;
     }
 

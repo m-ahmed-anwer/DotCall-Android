@@ -2,7 +2,9 @@ package com.example.dotcall_android;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.example.dotcall_android.manager.UserManager;
@@ -41,6 +43,18 @@ public class Summary extends AppCompatActivity {
                 .setOpenableLayout(drawer)
                 .build();
 
+
+//        View mainView = findViewById(R.id.container);
+//        mainView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//                    hideKeyboard();
+//                }
+//                return false;
+//            }
+//        });
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_summary);
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -51,8 +65,9 @@ public class Summary extends AppCompatActivity {
         TextView nameTextView = headerView.findViewById(R.id.name);
         TextView emailTextView = headerView.findViewById(R.id.email);
 
-        User user = UserManager.getInstance().getCurrentUser();
-
+        User user = new User("id","name","email","username","createdAt","notification","f","haptic");
+        UserManager.getInstance().setCurrentUser(user);
+        user = UserManager.getInstance().getCurrentUser();
         nameTextView.setText(user.getName());
         emailTextView.setText(user.getEmail());
     }
@@ -71,5 +86,15 @@ public class Summary extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_summary);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Summary.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view == null) {
+            view = new View(this);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        view.clearFocus();
     }
 }

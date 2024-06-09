@@ -60,11 +60,12 @@ public class SettingsFragment extends Fragment {
     private void signout(View v){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.signOut();
-
         UserManager.getInstance().clearCurrentUser();
         Toast.makeText(getContext(), "You have been Signed Out", Toast.LENGTH_LONG).show();
         Intent i= new Intent(getContext(), LaunchScreen.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
     }
+
+
 }

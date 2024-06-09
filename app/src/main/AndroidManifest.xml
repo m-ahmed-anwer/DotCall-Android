@@ -25,18 +25,20 @@
             android:name=".Summary"
             android:exported="true"
             android:label="@string/title_activity_summary"
-            android:theme="@style/Theme.DotCallAndroid.NoActionBar"/>
+            android:theme="@style/Theme.DotCallAndroid.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".CreateAccount"
             android:exported="false" />
         <activity
             android:name=".LaunchScreen"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Login"

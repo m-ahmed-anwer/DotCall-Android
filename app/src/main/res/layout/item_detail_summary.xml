@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="0dp">
+
+    <!-- Main layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:background="#f4f4f4"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:paddingStart="20dp">
+
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginStart="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/cdetail_summary_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+
+                android:layout_marginBottom="6dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="Its all about he topic of ood things and bad things other than that all ihis things are useles and nothing just worriesd tmeporary things dont care anything at all brother s and sisters"
+                android:textColor="#2C2C2C"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/detail_summary_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+
+                android:maxLines="1"
+                android:text="Today"
+                android:textColor="@color/launchDark"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+
+            android:textColor="@color/launchDark"
+            app:srcCompat="@drawable/baseline_arrow_forward_ios_24" />
+
+    </LinearLayout>
+
+    <!-- Bottom border view -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e6e6e6" /> <!-- Adjust the color as needed -->
+
+</LinearLayout>

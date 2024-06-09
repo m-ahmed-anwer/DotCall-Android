@@ -218,6 +218,7 @@ public class Login extends AppCompatActivity {
                                 progressDialog.dismiss();
                                 Toast.makeText(Login.this, "Authentication success.",
                                         Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(Login.this, Summary.class));
                             } else {
                                 progressDialog.dismiss();
                                 new AlertDialog.Builder(Login.this)

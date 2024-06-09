@@ -9,7 +9,23 @@
         android:id="@+id/nav_home"
         android:name="com.example.dotcall_android.ui.summary.SummaryFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_summary" />
+        tools:layout="@layout/fragment_summary">
+        <action
+            android:id="@+id/action_summaryFragment_to_summaryDetail"
+            app:destination="@id/nav_summaryDetail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_summaryDetail"
+        android:name="com.example.dotcall_android.ui.summary.DetailSummary"
+        android:label="Detail Summary"
+        tools:layout="@layout/fragment_summary_detail" />
+
+
+    <fragment
+        android:id="@+id/nav_friendProfile"
+        android:name="com.example.dotcall_android.ui.friends.FriendProfile"
+        tools:layout="@layout/fragment_friend_profile" />
 
     <fragment
         android:id="@+id/nav_settings"
@@ -24,7 +40,11 @@
 
     <fragment
         android:id="@+id/nav_contacts"
-        android:name="com.example.dotcall_android.ui.contacts.ContactFragment"
-        android:label="@string/menu_contacts"
-        tools:layout="@layout/fragment_contact" />
+        android:name="com.example.dotcall_android.ui.friends.FriendsFragment"
+        android:label="@string/menu_friends"
+        tools:layout="@layout/fragment_friends" >
+        <action
+            android:id="@+id/action_friendFragment_to_friendProfile"
+            app:destination="@id/nav_friendProfile" />
+    </fragment>
 </navigation>
