@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:id="@+id/searchFriendAdd"
     android:padding="0dp">
 
     <!-- Main layout -->
@@ -31,13 +32,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/summary_title"
+                android:id="@+id/public_friend_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="6dp"
-                android:text="@string/summary"
+                android:text="@string/name"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/bgColorDark"
@@ -45,27 +46,31 @@
                 android:ellipsize="end" />
 
             <TextView
-                android:id="@+id/summary_detail"
+                android:id="@+id/public_friend_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:text="@string/detail_summary"
+                android:text="@string/username"
                 android:textColor="@color/buttonDark"
                 android:textSize="15sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/summary_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/public_friend_add"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
-            android:text="@string/time"
-            android:textColor="@color/launchDark"
-            android:textSize="13sp" />
+            android:backgroundTint="@color/themeIcon"
+            android:clickable="true"
+            android:onClick="performAddFriend"
+            android:text="@string/add"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            />
     </LinearLayout>
 
     <!-- Bottom border view -->

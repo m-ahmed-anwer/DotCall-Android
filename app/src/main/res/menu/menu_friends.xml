@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Search item to be displayed in the action bar -->
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/search"
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+    <!-- Accept Request item under overflow menu -->
+    <item
+        android:id="@+id/action_accept_request"
+        android:orderInCategory="100"
+        android:title="@string/accept_request"
+        app:showAsAction="never" />
+
+    <!-- Find Friends item under overflow menu -->
+    <item
+        android:id="@+id/action_find_friends"
+        android:orderInCategory="200"
+        android:title="@string/find_friends"
+        app:showAsAction="never" />
+
+
+</menu>

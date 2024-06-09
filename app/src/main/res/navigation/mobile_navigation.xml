@@ -17,21 +17,48 @@
 
     <fragment
         android:id="@+id/nav_summaryDetail"
-        android:name="com.example.dotcall_android.ui.summary.DetailSummary"
+        android:name="com.example.dotcall_android.ui.summary.detailSummaryList.DetailSummary"
         android:label="Detail Summary"
-        tools:layout="@layout/fragment_summary_detail" />
+        tools:layout="@layout/fragment_summary_detail" >
+        <action
+            android:id="@+id/action_summaryDetail_to_singleSummary"
+            app:destination="@id/nav_single_summary" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/nav_single_summary"
+        android:label="Single Summary"
+        android:name="com.example.dotcall_android.ui.summary.singleDetailSummary.SingleSummary"
+        tools:layout="@layout/fragment_single_summary" />
 
     <fragment
         android:id="@+id/nav_friendProfile"
-        android:name="com.example.dotcall_android.ui.friends.FriendProfile"
-        tools:layout="@layout/fragment_friend_profile" />
+        android:name="com.example.dotcall_android.ui.friends.publicProfile.FriendProfile"
+        tools:layout="@layout/fragment_friend_profile" >
+        <argument
+            android:name="friendName"
+            app:argType="string" />
+        <argument
+            android:name="friendUsername"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.example.dotcall_android.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settings_to_update_profile"
+            app:destination="@id/nav_update_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_update_profile"
+        android:label="Update Profile"
+        android:name="com.example.dotcall_android.ui.settings.UpdateProfile"
+        tools:layout="@layout/fragment_update_profile" />
+
     <fragment
         android:id="@+id/nav_recents"
         android:name="com.example.dotcall_android.ui.recent.RecentFragment"
@@ -46,5 +73,24 @@
         <action
             android:id="@+id/action_friendFragment_to_friendProfile"
             app:destination="@id/nav_friendProfile" />
+        <action
+            android:id="@+id/action_friendFragment_to_friendAccept"
+            app:destination="@id/nav_friend_accept" />
+        <action
+            android:id="@+id/action_friendFragment_to_friendSearch"
+            app:destination="@id/nav_friend_search" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_friend_accept"
+        android:label="@string/accept_request"
+        android:name="com.example.dotcall_android.ui.friends.acceptFriend.AcceptFriend"
+        tools:layout="@layout/fragment_accept_friend" />
+
+    <fragment
+        android:id="@+id/nav_friend_search"
+        android:label="@string/find_friends"
+        android:name="com.example.dotcall_android.ui.friends.search.SearchFriend"
+        tools:layout="@layout/fragment_search_friend" />
+
 </navigation>

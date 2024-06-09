@@ -24,7 +24,6 @@
         <activity
             android:name=".Summary"
             android:exported="true"
-            android:label="@string/title_activity_summary"
             android:theme="@style/Theme.DotCallAndroid.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.dotcall_android.ui.summary;
+package com.example.dotcall_android.ui.summary.detailSummaryList;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

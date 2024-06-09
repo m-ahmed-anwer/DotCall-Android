@@ -50,9 +50,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Login extends AppCompatActivity {
 
-    private  ProgressDialog progressDialog;
-    String email =null;
-    String password=null;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,48 +99,45 @@ public class Login extends AppCompatActivity {
     }
 
 
-    public void performLogin(View v){
+    public void performLogin(View v) {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading.....");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        email =((EditText)findViewById(R.id.email)).getText().toString().trim();
-        password= ((EditText)findViewById(R.id.password)).getText().toString().trim();
+        String email = emailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
 
         if (email.isEmpty()) {
             progressDialog.dismiss();
-            toast("Email cannot be empty");
+            emailEditText.setError("Email cannot be empty");
             return;
         }
         if (password.isEmpty()) {
             progressDialog.dismiss();
-            toast("Password cannot be empty");
+            passwordEditText.setError("Password cannot be empty");
             return;
         }
 
         if (!isValidEmail(email)) {
             progressDialog.dismiss();
-            toast("Invalid email format");
+            emailEditText.setError("Invalid email format");
             return;
         }
         if (password.length() < 6) {
             progressDialog.dismiss();
-            toast("Password must be at least 6 characters long");
+            passwordEditText.setError("Password must be at least 6 characters long");
             return;
         }
 
-        loginUser(email,password);
-//        progressDialog.dismiss();
-
-
+        loginUser(email, password);
     }
 
     private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private void loginUser(String phoneNumber, String password) {
+    private void loginUser(String email, String password) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("email", email);

@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.dotcall_android.LaunchScreen;
 import com.example.dotcall_android.R;
@@ -48,6 +50,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        binding.updateProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(SettingsFragment.this)
+                        .navigate(R.id.action_settings_to_update_profile);
+            }
+        });
+
         return root;
     }
 
@@ -66,6 +76,4 @@ public class SettingsFragment extends Fragment {
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
     }
-
-
 }

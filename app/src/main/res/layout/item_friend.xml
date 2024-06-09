@@ -30,8 +30,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:text="@string/name"
-            android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textColor="@color/bgColorDark"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
     </LinearLayout>

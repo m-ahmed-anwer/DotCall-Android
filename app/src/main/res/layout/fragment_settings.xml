@@ -160,12 +160,25 @@
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout2"
+                            android:id="@+id/updateProfile"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
+                            android:onClick="updateProfile"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/editdetail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginEnd="35dp"
+                                android:layout_marginBottom="15dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:srcCompat="@drawable/baseline_arrow_forward_ios_24" />
 
                             <ImageButton
                                 android:id="@+id/imageButton4"
@@ -205,7 +218,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+                            app:layout_constraintTop_toBottomOf="@+id/updateProfile">
 
                             <Switch
                                 android:id="@+id/switch2"
@@ -338,12 +351,13 @@
                             android:id="@+id/textView18"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="18dp"
+                            android:layout_marginStart="22dp"
                             android:layout_marginTop="14dp"
                             android:layout_marginBottom="14dp"
                             android:text="@string/log_out"
-                            android:textColor="@color/black"
+                            android:textColor="#DF0A0A"
                             android:textSize="16sp"
+                            android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />

@@ -1,26 +1,30 @@
 package com.example.dotcall_android.ui.summary;
 
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-        import androidx.annotation.NonNull;
-        import androidx.navigation.Navigation;
-        import androidx.recyclerview.widget.RecyclerView;
-        import com.example.dotcall_android.R;
+import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.dotcall_android.R;
 
-        import com.example.dotcall_android.model.Summary;
+import com.example.dotcall_android.model.Summary;
 
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
+import android.widget.Filter;
+import android.widget.Filterable;
 
-
-public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.SummaryViewHolder> {
+public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.SummaryViewHolder> implements Filterable {
 
     private List<Summary> summaries;
+    private List<Summary> summariesFull;
 
     public SummaryAdapter(List<Summary> summaries) {
         this.summaries = summaries;
+        this.summariesFull = new ArrayList<>(summaries); // Copy of the full list
     }
 
     @NonNull
@@ -45,9 +49,43 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.SummaryV
         return summaries.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return summaryFilter;
+    }
+
+    private Filter summaryFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Summary> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(summariesFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Summary item : summariesFull) {
+                    if (item.getRecentSummary().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            summaries.clear();
+            summaries.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
     public static class SummaryViewHolder extends RecyclerView.ViewHolder {
         TextView summaryTitle;
-        TextView summaryDetail;
         TextView summaryTime;
 
         public SummaryViewHolder(@NonNull View itemView) {
@@ -57,4 +95,3 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.SummaryV
         }
     }
 }
-

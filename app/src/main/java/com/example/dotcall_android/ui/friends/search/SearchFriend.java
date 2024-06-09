@@ -1,4 +1,4 @@
-package com.example.dotcall_android.ui.summary;
+package com.example.dotcall_android.ui.friends.search;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,54 +13,53 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.dotcall_android.R;
-import com.example.dotcall_android.databinding.FragmentSummaryBinding;
-import com.example.dotcall_android.model.Summary;
+import com.example.dotcall_android.databinding.FragmentSearchFriendBinding;
+import com.example.dotcall_android.model.Friend;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class SummaryFragment extends Fragment {
+public class SearchFriend extends Fragment {
 
-    private FragmentSummaryBinding binding;
-    private SummaryAdapter adapter;
-    private List<Summary> summaries;
-
+    private SearchFriendsAdapter adapter;
+    private FragmentSearchFriendBinding binding;
+    private List<Friend> friendsList;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentSummaryBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        RecyclerView summaryRecyclerView = binding.summary;
+        View view = inflater.inflate(R.layout.fragment_search_friend, container, false);
 
-        summaries = new ArrayList<>();
+        RecyclerView recyclerView = view.findViewById(R.id.search_friends);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        friendsList = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
-            summaries.add(new Summary("Call Receiver Name " + i, "Call Receiver Username " + i, "Recent Summary " + i, "Recent Time " + i));
+            friendsList.add(new Friend("Friend " + i, "friend" + i + "@example.com", "username" + i));
         }
 
-        adapter = new SummaryAdapter(summaries);
-        summaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        summaryRecyclerView.setAdapter(adapter);
 
-        return root;
+
+        adapter = new SearchFriendsAdapter( friendsList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+        return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.search_bar, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        inflater.inflate(R.menu.add_friend, menu);
+        MenuItem searchItem = menu.findItem(R.id.app_bar_search_friends);
         SearchView searchView = (SearchView) searchItem.getActionView();
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -77,3 +76,15 @@ public class SummaryFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

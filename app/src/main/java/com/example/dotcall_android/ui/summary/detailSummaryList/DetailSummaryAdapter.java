@@ -1,4 +1,4 @@
-package com.example.dotcall_android.ui.summary;
+package com.example.dotcall_android.ui.summary.detailSummaryList;
 
 
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dotcall_android.R;
@@ -32,7 +33,10 @@ public class DetailSummaryAdapter extends RecyclerView.Adapter<DetailSummaryAdap
     public void onBindViewHolder(@NonNull DetailSummaryViewHolder holder, int position) {
         String summary = summaries.get(position);
         holder.summaryTitle.setText(summary);
-        holder.summaryTime.setText("summary"); // Example, you can customize this
+        holder.summaryTime.setText("summary");
+        holder.itemView.setOnClickListener(v ->
+            Navigation.findNavController(v).navigate(R.id.action_summaryDetail_to_singleSummary)
+        );
     }
 
     @Override
