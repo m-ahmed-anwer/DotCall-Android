@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dotcall_android.R;
 import com.example.dotcall_android.model.Friend;
 import com.example.dotcall_android.ui.friends.FriendsAdapter;
+import com.example.dotcall_android.ui.friends.acceptFriend.AcceptFriendAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,12 +52,11 @@ public class SearchFriendsAdapter extends RecyclerView.Adapter<SearchFriendsAdap
         Friend friend = friendsList.get(position);
         holder.name.setText(friend.getName());
         holder.username.setText(friend.getUsername());
-        holder.addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                performAddFriend(friend);
-            }
-        });
+        holder.addButton.setOnClickListener(v -> performAccept(holder, friend));
+    }
+
+    private void performAccept(SearchFriendsAdapter.ViewHolder holder, Friend friend) {
+        Toast.makeText(holder.itemView.getContext(), "Searching " + friend.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

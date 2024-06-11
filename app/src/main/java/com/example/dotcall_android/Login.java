@@ -50,9 +50,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Login extends AppCompatActivity {
 
-    private EditText emailEditText;
-    private EditText passwordEditText;
-    private ProgressDialog progressDialog;
+    private  ProgressDialog progressDialog;
+    String email =null;
+    String password=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,45 +99,48 @@ public class Login extends AppCompatActivity {
     }
 
 
-    public void performLogin(View v) {
+    public void performLogin(View v){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading.....");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        String email = emailEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
+        email =((EditText)findViewById(R.id.email)).getText().toString().trim();
+        password= ((EditText)findViewById(R.id.password)).getText().toString().trim();
 
         if (email.isEmpty()) {
             progressDialog.dismiss();
-            emailEditText.setError("Email cannot be empty");
+            toast("Email cannot be empty");
             return;
         }
         if (password.isEmpty()) {
             progressDialog.dismiss();
-            passwordEditText.setError("Password cannot be empty");
+            toast("Password cannot be empty");
             return;
         }
 
         if (!isValidEmail(email)) {
             progressDialog.dismiss();
-            emailEditText.setError("Invalid email format");
+            toast("Invalid email format");
             return;
         }
         if (password.length() < 6) {
             progressDialog.dismiss();
-            passwordEditText.setError("Password must be at least 6 characters long");
+            toast("Password must be at least 6 characters long");
             return;
         }
 
-        loginUser(email, password);
+        loginUser(email,password);
+//        progressDialog.dismiss();
+
+
     }
 
     private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private void loginUser(String email, String password) {
+    private void loginUser(String phoneNumber, String password) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("email", email);
@@ -156,20 +159,20 @@ public class Login extends AppCompatActivity {
                         try {
                             boolean success = response.getBoolean("success");
                             if (success) {
-                            JSONObject userObj = response.getJSONObject("user");
-                            String id = userObj.getString("_id");
-                            String name = userObj.getString("name");
-                            String email = userObj.getString("email");
-                            String username = userObj.getString("username");
-                            String createdAt = userObj.getString("createdAt");
-                            JSONObject generalSettingsObj = userObj.getJSONObject("generalSettings");
-                            String notification = generalSettingsObj.getString("notification");
-                            String faceId = generalSettingsObj.getString("faceId");
-                            String haptic = generalSettingsObj.getString("haptic");
+                                JSONObject userObj = response.getJSONObject("user");
+                                String id = userObj.getString("_id");
+                                String name = userObj.getString("name");
+                                String email = userObj.getString("email");
+                                String username = userObj.getString("username");
+                                String createdAt = userObj.getString("createdAt");
+                                JSONObject generalSettingsObj = userObj.getJSONObject("generalSettings");
+                                String notification = generalSettingsObj.getString("notification");
+                                String faceId = generalSettingsObj.getString("faceId");
+                                String haptic = generalSettingsObj.getString("haptic");
 
-                            User user = new User(id,name,email,username,createdAt,notification,faceId,haptic);
-                            UserManager.getInstance().setCurrentUser(user);
-                            signInFirebase(email,password);
+                                User user = new User(id,name,email,username,createdAt,notification,faceId,haptic);
+                                UserManager.getInstance().setCurrentUser(user);
+                                signInFirebase(email,password);
                             } else {
                                 String message = response.getString("message");
                                 progressDialog.dismiss();
@@ -213,9 +216,9 @@ public class Login extends AppCompatActivity {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if (user.isEmailVerified()) {
                                 progressDialog.dismiss();
-                                Toast.makeText(Login.this, "Authentication success.",
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login.this, "Authentication success.", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(Login.this, Summary.class));
+                                finish();
                             } else {
                                 progressDialog.dismiss();
                                 new AlertDialog.Builder(Login.this)

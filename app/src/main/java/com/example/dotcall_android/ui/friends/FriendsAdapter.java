@@ -1,9 +1,12 @@
 package com.example.dotcall_android.ui.friends;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.example.dotcall_android.CallActivity;
 import com.example.dotcall_android.R;
 import com.example.dotcall_android.model.Friend;
 
@@ -22,8 +26,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 
     private List<Friend> friendsList;
     private List<Friend> friendsListFull;
+    private Context context;
 
-    public FriendsAdapter(List<Friend> friendsList) {
+    public FriendsAdapter(Context context, List<Friend> friendsList) {
+        this.context = context;
         this.friendsList = friendsList;
         this.friendsListFull = new ArrayList<>(friendsList); // Copy of the full list
     }
@@ -39,6 +45,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
         Friend friend = friendsList.get(position);
         holder.nameTextView.setText(friend.getName());
+
         holder.itemView.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putString("friendName", friend.getName());
@@ -46,8 +53,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
             bundle.putString("friendEmail", friend.getEmail());
             Navigation.findNavController(v).navigate(R.id.action_friendFragment_to_friendProfile, bundle);
         });
+
+        holder.callButton.setOnClickListener(v -> performCall(friend));
     }
 
+    private void performCall(Friend friend) {
+        Intent callIntent = new Intent(context, CallActivity.class);
+        context.startActivity(callIntent);
+    }
 
     @Override
     public int getItemCount() {
@@ -91,10 +104,12 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 
     static class FriendViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView;
+        Button callButton;
 
         public FriendViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.friend_name);
+            callButton = itemView.findViewById(R.id.friend_call);
         }
     }
 }

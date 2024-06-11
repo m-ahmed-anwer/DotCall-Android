@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -20,14 +23,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DotCallAndroid"
         tools:targetApi="31">
-
+        <activity
+            android:name=".CallActivity"
+            android:exported="false" />
         <activity
             android:name=".Summary"
             android:exported="true"
             android:theme="@style/Theme.DotCallAndroid.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,9 +40,7 @@
             android:exported="false" />
         <activity
             android:name=".LaunchScreen"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"/>
         <activity
             android:name=".Login"
             android:exported="false" />

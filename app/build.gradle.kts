@@ -1,7 +1,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     id("com.google.gms.google-services")
+
 }
+
+
 
 android {
     namespace = "com.example.dotcall_android"
@@ -37,6 +40,7 @@ android {
 
 dependencies {
     implementation("com.android.volley:volley:1.2.0")
+    implementation("'io.realm:realm-gradle-plugin:10.10.1'")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

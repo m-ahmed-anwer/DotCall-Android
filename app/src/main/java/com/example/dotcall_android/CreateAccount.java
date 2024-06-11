@@ -229,6 +229,7 @@ public class CreateAccount extends AppCompatActivity {
                                             if (task.isSuccessful()) {
                                                 Toast.makeText(CreateAccount.this, "Verification email sent.",
                                                         Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(CreateAccount.this, Login.class));
                                             }
                                         }
                                     });

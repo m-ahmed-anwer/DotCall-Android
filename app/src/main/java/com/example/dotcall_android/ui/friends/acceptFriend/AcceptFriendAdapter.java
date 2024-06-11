@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,12 +38,11 @@ public class AcceptFriendAdapter extends RecyclerView.Adapter<AcceptFriendAdapte
         Friend friend = friendsList.get(position);
         holder.name.setText(friend.getName());
         holder.username.setText(friend.getUsername());
-        holder.acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Implement your accept friend logic here
-            }
-        });
+        holder.acceptButton.setOnClickListener(v -> performAccept(holder, friend));
+    }
+
+    private void performAccept(AcceptFriendAdapter.ViewHolder holder, Friend friend) {
+        Toast.makeText(holder.itemView.getContext(), "Accepting " + friend.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

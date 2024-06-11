@@ -50,7 +50,7 @@ public class FriendsFragment extends Fragment {
             friendsList.add(new Friend("Friend " + i, "friend" + i + "@example.com", "username" + i));
         }
 
-        adapter = new FriendsAdapter(friendsList);
+        adapter = new FriendsAdapter(getContext(), friendsList);
         friendsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         friendsRecyclerView.setAdapter(adapter);
 
@@ -98,4 +98,6 @@ public class FriendsFragment extends Fragment {
             return super.onOptionsItemSelected(item);
         }
     }
+
+
 }
