@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -24,8 +23,10 @@ import com.example.dotcall_android.databinding.ActivitySummaryBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Summary extends AppCompatActivity {
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
+public class Summary extends AppCompatActivity {
     private static final String TAG = "SummaryActivity";
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -47,6 +48,12 @@ public class Summary extends AppCompatActivity {
             return;
         }
 
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(config);
+
+
+
         binding = ActivitySummaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -58,6 +65,8 @@ public class Summary extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_recents, R.id.nav_contacts)
                 .setOpenableLayout(drawer)
                 .build();
+
+
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_summary);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -130,4 +139,5 @@ public class Summary extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         view.clearFocus();
     }
+
 }

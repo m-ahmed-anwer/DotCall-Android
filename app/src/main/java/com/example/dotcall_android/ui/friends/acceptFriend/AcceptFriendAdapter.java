@@ -42,6 +42,7 @@ public class AcceptFriendAdapter extends RecyclerView.Adapter<AcceptFriendAdapte
     }
 
     private void performAccept(AcceptFriendAdapter.ViewHolder holder, Friend friend) {
+
         Toast.makeText(holder.itemView.getContext(), "Accepting " + friend.getName(), Toast.LENGTH_SHORT).show();
     }
 

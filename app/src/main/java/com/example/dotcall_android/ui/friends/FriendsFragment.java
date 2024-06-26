@@ -18,10 +18,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.dotcall_android.R;
 import com.example.dotcall_android.databinding.FragmentFriendsBinding;
+import com.example.dotcall_android.manager.UserManager;
 import com.example.dotcall_android.model.Friend;
+import com.example.dotcall_android.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,25 +45,31 @@ public class FriendsFragment extends Fragment {
 
     private FragmentFriendsBinding binding;
     private FriendsAdapter adapter;
+    private RequestQueue requestQueue;
     private List<Friend> friendsList;
 
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user = mAuth.getCurrentUser();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        requestQueue = Volley.newRequestQueue(requireContext());
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FriendsViewModel contactViewModel = new ViewModelProvider(this).get(FriendsViewModel.class);
 
         binding = FragmentFriendsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final RecyclerView friendsRecyclerView = binding.friends;
         friendsList = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
-            friendsList.add(new Friend("Friend " + i, "friend" + i + "@example.com", "username" + i));
+
+
+        if (user != null) {
+            String userEmail = user.getEmail();
+            fetchFriends(userEmail);
         }
 
         adapter = new FriendsAdapter(getContext(), friendsList);
@@ -99,5 +121,49 @@ public class FriendsFragment extends Fragment {
         }
     }
 
+
+    private void fetchFriends(String email) {
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, "https://dot-call-a7ff3d8633ee.herokuapp.com/friends/getFriends/" + email,null, new Response.Listener<JSONObject>(){
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Handle the response from the server
+                        try {
+                            JSONArray friendsArray = response.getJSONArray("friends");
+                            friendsList.clear();
+                            for (int i = 0; i < friendsArray.length(); i++) {
+                                JSONObject friendObject = friendsArray.getJSONObject(i);
+                                String name = friendObject.getString("name");
+                                String username = friendObject.getString("username");
+                                String email = friendObject.getString("email");
+                                friendsList.add(new Friend(name, email, username));
+                            }
+                            Toast.makeText(getActivity(), "Friends Updated", Toast.LENGTH_SHORT).show();
+                            adapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String errorMessage = "Error occurred";
+                        if (error.networkResponse != null && error.networkResponse.data != null) {
+                            try {
+                                String errorResponse = new String(error.networkResponse.data, "UTF-8");
+                                new JSONObject(errorResponse);
+                            } catch (UnsupportedEncodingException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                });
+
+        Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
+    }
 
 }

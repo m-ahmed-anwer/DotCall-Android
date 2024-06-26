@@ -9,10 +9,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.dotcall_android.R;
 import com.example.dotcall_android.model.Friend;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +33,9 @@ public class AcceptFriend extends Fragment {
 
     private AcceptFriendAdapter adapter;
     private List<Friend> friendsList;
+
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user = mAuth.getCurrentUser();
 
 
     @Override
@@ -37,10 +53,12 @@ public class AcceptFriend extends Fragment {
 
 
         friendsList = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
-            friendsList.add(new Friend("Friend " + i, "friend" + i + "@example.com", "username" + i));
-        }
 
+
+        if (user != null) {
+            String userEmail = user.getEmail();
+            fetchAcceptFriends(userEmail);
+        }
 
 
         adapter = new AcceptFriendAdapter(friendsList);
@@ -50,5 +68,48 @@ public class AcceptFriend extends Fragment {
     }
 
 
+    private void fetchAcceptFriends(String email) {
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, "https://dot-call-a7ff3d8633ee.herokuapp.com/friends/getFriendsToAccept/" + email,null, new Response.Listener<JSONObject>(){
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Handle the response from the server
+                        try {
+                            JSONArray friendsArray = response.getJSONArray("friendsToAccept");
+                            friendsList.clear();
+                            for (int i = 0; i < friendsArray.length(); i++) {
+                                JSONObject friendObject = friendsArray.getJSONObject(i);
+                                String name = friendObject.getString("name");
+                                String username = friendObject.getString("username");
+                                String email = friendObject.getString("email");
+                                friendsList.add(new Friend(name, email, username));
+                            }
+                            Toast.makeText(getActivity(), "Friends Updated", Toast.LENGTH_SHORT).show();
+                            adapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String errorMessage = "Error occurred";
+                        if (error.networkResponse != null && error.networkResponse.data != null) {
+                            try {
+                                String errorResponse = new String(error.networkResponse.data, "UTF-8");
+                                new JSONObject(errorResponse);
+                            } catch (UnsupportedEncodingException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                });
+
+        Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
+    }
 
 }

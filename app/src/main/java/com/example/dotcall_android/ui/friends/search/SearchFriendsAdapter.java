@@ -33,11 +33,9 @@ import java.util.List;
 public class SearchFriendsAdapter extends RecyclerView.Adapter<SearchFriendsAdapter.ViewHolder> {
     private Context context;
     private List<Friend> friendsList;
-    private List<Friend> friendsListFull;
 
     public SearchFriendsAdapter( List<Friend> friendsList) {
         this.friendsList = friendsList;
-        this.friendsListFull = new ArrayList<>(friendsList);
     }
 
     @NonNull
@@ -64,40 +62,6 @@ public class SearchFriendsAdapter extends RecyclerView.Adapter<SearchFriendsAdap
         return friendsList.size();
     }
 
-
-    public Filter getFilter() {
-        return friendsFilter;
-    }
-
-    private Filter friendsFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<Friend> filteredList = new ArrayList<>();
-
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(friendsListFull);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for (Friend friend : friendsListFull) {
-                    if (friend.getName().toLowerCase().contains(filterPattern) || friend.getUsername().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(friend);
-                    }
-                }
-            }
-
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            friendsList.clear();
-            friendsList.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
-    };
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView name;

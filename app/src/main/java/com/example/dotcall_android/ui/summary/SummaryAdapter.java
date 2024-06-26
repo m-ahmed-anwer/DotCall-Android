@@ -8,37 +8,37 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.dotcall_android.R;
 
-import com.example.dotcall_android.model.Summary;
+import com.example.dotcall_android.R;
+import com.example.dotcall_android.model.SummaryUser;
 
 import java.util.ArrayList;
 import java.util.List;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.SummaryViewHolder> implements Filterable {
+public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.SummaryUserViewHolder> implements Filterable {
 
-    private List<Summary> summaries;
-    private List<Summary> summariesFull;
+    private final List<SummaryUser> summaryUsers;
+    private final List<SummaryUser> summaryUsersFull;
 
-    public SummaryAdapter(List<Summary> summaries) {
-        this.summaries = summaries;
-        this.summariesFull = new ArrayList<>(summaries); // Copy of the full list
+    public SummaryAdapter(List<SummaryUser> summaryUsers) {
+        this.summaryUsers = summaryUsers;
+        this.summaryUsersFull = new ArrayList<>(summaryUsers); // Copy of the full list
     }
 
     @NonNull
     @Override
-    public SummaryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SummaryUserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_summary, parent, false);
-        return new SummaryViewHolder(view);
+        return new SummaryUserViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SummaryViewHolder holder, int position) {
-        Summary summary = summaries.get(position);
-        holder.summaryTitle.setText(summary.getRecentSummary());
-        holder.summaryTime.setText(summary.getRecentTime());
+    public void onBindViewHolder(@NonNull SummaryUserViewHolder holder, int position) {
+        SummaryUser summaryUser = summaryUsers.get(position);
+        holder.callReceiverName.setText(summaryUser.getCallReceiverName());
+        holder.recentSummary.setText(summaryUser.getRecentSummary());
         holder.itemView.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_summaryFragment_to_summaryDetail);
         });
@@ -46,26 +46,27 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.SummaryV
 
     @Override
     public int getItemCount() {
-        return summaries.size();
+        return summaryUsers.size();
     }
 
     @Override
     public Filter getFilter() {
-        return summaryFilter;
+        return summaryUserFilter;
     }
 
-    private Filter summaryFilter = new Filter() {
+    private Filter summaryUserFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<Summary> filteredList = new ArrayList<>();
+            List<SummaryUser> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(summariesFull);
+                filteredList.addAll(summaryUsersFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (Summary item : summariesFull) {
-                    if (item.getRecentSummary().toLowerCase().contains(filterPattern)) {
+                for (SummaryUser item : summaryUsersFull) {
+                    if (item.getCallReceiverName().toLowerCase().contains(filterPattern) ||
+                            item.getRecentSummary().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
@@ -78,20 +79,21 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.SummaryV
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            summaries.clear();
-            summaries.addAll((List) results.values);
+            summaryUsers.clear();
+            summaryUsers.addAll((List) results.values);
             notifyDataSetChanged();
         }
     };
 
-    public static class SummaryViewHolder extends RecyclerView.ViewHolder {
-        TextView summaryTitle;
-        TextView summaryTime;
+    public static class SummaryUserViewHolder extends RecyclerView.ViewHolder {
+        TextView callReceiverName;
+        TextView recentSummary;
 
-        public SummaryViewHolder(@NonNull View itemView) {
+        public SummaryUserViewHolder(@NonNull View itemView) {
             super(itemView);
-            summaryTitle = itemView.findViewById(R.id.summary_title);
-            summaryTime = itemView.findViewById(R.id.summary_time);
+            callReceiverName = itemView.findViewById(R.id.content_transcription);
+            recentSummary = itemView.findViewById(R.id.time_transcription);
+
         }
     }
 }

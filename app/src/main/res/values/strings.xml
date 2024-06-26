@@ -77,6 +77,13 @@
     <string name="search_by_username">Search by username...</string>
     <string name="calling">calling...</string>
     <string name="ahmed_anwer_muted_this_call">Ahmed Anwer muted this call</string>
+    <string name="copy">Copy</string>
+    <string name="share">Share</string>
+    <string name="transcription">Transcription</string>
+    <string name="recording">Recording</string>
+    <string name="speaker_name">Speaker name</string>
+    <string name="summary_title_goes_here">Summary Title Goes Here</string>
+    <string name="summary_text_goes_here_noasdna_asd_a_asds_dsdsds_asdfsdsadsd_asdsdasd_asdasdasd">Summary text goes here noasdna asd a asds dsdsds asdfsdsadsd asdsdasd asdasdasd</string>
 
 
 </resources>

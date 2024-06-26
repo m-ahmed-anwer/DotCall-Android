@@ -27,10 +27,27 @@
 
     <fragment
         android:id="@+id/nav_single_summary"
-        android:label="Single Summary"
+        android:label="Summary"
         android:name="com.example.dotcall_android.ui.summary.singleDetailSummary.SingleSummary"
-        tools:layout="@layout/fragment_single_summary" />
+        tools:layout="@layout/fragment_single_summary" >
+        <action
+            android:id="@+id/action_nav_single_summary_to_nav_single_recording"
+            app:destination="@id/nav_single_recording" />
+        <action
+            android:id="@+id/action_nav_single_summary_to_nav_single_transcription"
+            app:destination="@id/nav_single_transcription" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/nav_single_recording"
+        android:name="com.example.dotcall_android.ui.summary.recording.RecordingFragment"
+        android:label="Recording"
+        tools:layout="@layout/fragment_recording" />
+    <fragment
+        android:id="@+id/nav_single_transcription"
+        android:name="com.example.dotcall_android.ui.summary.transcription.TranscriptionFragment"
+        android:label="Transcription"
+        tools:layout="@layout/fragment_transcription" />
     <fragment
         android:id="@+id/nav_friendProfile"
         android:name="com.example.dotcall_android.ui.friends.publicProfile.FriendProfile"

@@ -11,14 +11,15 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dotcall_android.R;
+import com.example.dotcall_android.model.Summary;
 
 import java.util.List;
 
 public class DetailSummaryAdapter extends RecyclerView.Adapter<DetailSummaryAdapter.DetailSummaryViewHolder> {
 
-    private List<String> summaries;
+    private final List<Summary> summaries;
 
-    public DetailSummaryAdapter(List<String> summaries) {
+    public DetailSummaryAdapter(List<Summary> summaries) {
         this.summaries = summaries;
     }
 
@@ -31,11 +32,11 @@ public class DetailSummaryAdapter extends RecyclerView.Adapter<DetailSummaryAdap
 
     @Override
     public void onBindViewHolder(@NonNull DetailSummaryViewHolder holder, int position) {
-        String summary = summaries.get(position);
-        holder.summaryTitle.setText(summary);
-        holder.summaryTime.setText("summary");
+        Summary summary = summaries.get(position);
+        holder.summaryTitle.setText(summary.getSummaryTopic());
+        holder.summaryDetail.setText(summary.getSummaryDetail());
         holder.itemView.setOnClickListener(v ->
-            Navigation.findNavController(v).navigate(R.id.action_summaryDetail_to_singleSummary)
+                Navigation.findNavController(v).navigate(R.id.action_summaryDetail_to_singleSummary)
         );
     }
 
@@ -46,12 +47,12 @@ public class DetailSummaryAdapter extends RecyclerView.Adapter<DetailSummaryAdap
 
     public static class DetailSummaryViewHolder extends RecyclerView.ViewHolder {
         TextView summaryTitle;
-        TextView summaryTime;
+        TextView summaryDetail;
 
         public DetailSummaryViewHolder(@NonNull View itemView) {
             super(itemView);
-            summaryTitle = itemView.findViewById(R.id.cdetail_summary_title);
-            summaryTime = itemView.findViewById(R.id.detail_summary_time);
+            summaryTitle = itemView.findViewById(R.id.detail_summary_title);
+            summaryDetail = itemView.findViewById(R.id.detail_summary);
         }
     }
 }

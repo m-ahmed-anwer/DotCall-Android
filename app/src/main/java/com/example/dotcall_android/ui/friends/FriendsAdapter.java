@@ -2,6 +2,7 @@ package com.example.dotcall_android.ui.friends;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +18,25 @@ import android.widget.Filterable;
 
 import com.example.dotcall_android.CallActivity;
 import com.example.dotcall_android.R;
+import com.example.dotcall_android.Summary;
+import com.example.dotcall_android.model.CallLog;
 import com.example.dotcall_android.model.Friend;
+import com.example.dotcall_android.model.SummaryUser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+
+import io.realm.Realm;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendViewHolder> implements Filterable {
 
-    private List<Friend> friendsList;
-    private List<Friend> friendsListFull;
-    private Context context;
+    private final List<Friend> friendsList;
+    private final List<Friend> friendsListFull;
+    private final Context context;
 
     public FriendsAdapter(Context context, List<Friend> friendsList) {
         this.context = context;
@@ -58,9 +68,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
     }
 
     private void performCall(Friend friend) {
+
         Intent callIntent = new Intent(context, CallActivity.class);
         context.startActivity(callIntent);
     }
+
 
     @Override
     public int getItemCount() {

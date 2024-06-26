@@ -28,28 +28,24 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/cdetail_summary_title"
+                android:id="@+id/detail_summary_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-
                 android:layout_marginBottom="6dp"
                 android:ellipsize="end"
-                android:maxLines="3"
-                android:text="Its all about he topic of ood things and bad things other than that all ihis things are useles and nothing just worriesd tmeporary things dont care anything at all brother s and sisters"
+                android:maxLines="2"
                 android:textColor="#2C2C2C"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/detail_summary_time"
+                android:id="@+id/detail_summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
-
-                android:maxLines="1"
-                android:text="Today"
+                android:maxLines="3"
                 android:textColor="@color/launchDark"
                 android:textSize="15sp" />
         </LinearLayout>

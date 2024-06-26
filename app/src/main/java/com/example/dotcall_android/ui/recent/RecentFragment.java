@@ -7,12 +7,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,33 +23,40 @@ import com.example.dotcall_android.model.CallLog;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 public class RecentFragment extends Fragment {
 
     private FragmentRecentsBinding binding;
     private RecentAdapter adapter;
     private List<CallLog> callLogs;
+    private TextView noRecentCallsTextView;
+    private RecyclerView recentCallList;
+    private Realm realm;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        RecentViewModel recentViewModel =
-                new ViewModelProvider(this).get(RecentViewModel.class);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        realm = Realm.getDefaultInstance();
+    }
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRecentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        setHasOptionsMenu(true);
-
-        final RecyclerView recentCallList = binding.recentCall;
+        recentCallList = binding.recentCall;
+        noRecentCallsTextView = root.findViewById(R.id.no_recent_calls);
 
         callLogs = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
-            callLogs.add(new CallLog("John Doe", "10:30 AM", "5m 30s", "Incoming", "Missed"));
-        }
+        //fetchCallLogsFromRealm();
 
-        // Set up the adapter
         adapter = new RecentAdapter(callLogs, requireContext());
         recentCallList.setLayoutManager(new LinearLayoutManager(getContext()));
         recentCallList.setAdapter(adapter);
+
+        updateEmptyState();
 
         return root;
     }
@@ -58,6 +65,9 @@ public class RecentFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        if (realm != null) {
+            realm.close();
+        }
     }
 
     @Override
@@ -88,8 +98,23 @@ public class RecentFragment extends Fragment {
     }
 
     private void clearCallLogs() {
-        callLogs.clear();
-        adapter.notifyDataSetChanged();
+
         Toast.makeText(getActivity(), "All recent calls cleared", Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateEmptyState() {
+        if (callLogs.isEmpty()) {
+            noRecentCallsTextView.setVisibility(View.VISIBLE);
+            recentCallList.setVisibility(View.GONE);
+        } else {
+            noRecentCallsTextView.setVisibility(View.GONE);
+            recentCallList.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void fetchCallLogsFromRealm() {
+        RealmResults<CallLog> results = realm.where(CallLog.class).findAll();
+        callLogs.addAll(realm.copyFromRealm(results));
+        adapter.notifyDataSetChanged();
     }
 }

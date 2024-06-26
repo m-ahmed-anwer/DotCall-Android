@@ -1,50 +1,65 @@
 package com.example.dotcall_android.model;
 
-import java.util.List;
+import com.example.dotcall_android.model.Summary;
 
-public class SummaryUser {
-    private String callMakerEmail;
-    private String callMakerName;
-    private String callMakerUsername;
-    private List<Summary> summaries;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    public SummaryUser(String callMakerEmail, String callMakerName, String callMakerUsername, List<Summary> summaries) {
-        this.callMakerEmail = callMakerEmail;
-        this.callMakerName = callMakerName;
-        this.callMakerUsername = callMakerUsername;
-        this.summaries = summaries;
+public class SummaryUser extends RealmObject {
+
+
+    private String callReceiverUsername;
+
+    private String callReceiverName;
+
+
+    private String recentSummary;
+    private String recentTime;
+
+
+
+    public SummaryUser() {
     }
 
-    // Getters and setters
-    public String getCallMakerEmail() {
-        return callMakerEmail;
+    public SummaryUser(String callReceiverUsername, String callReceiverName, String recentSummary, String recentTime) {
+        this.callReceiverUsername = callReceiverUsername;
+        this.callReceiverName = callReceiverName;
+        this.recentSummary = recentSummary;
+        this.recentTime = recentTime;
     }
 
-    public void setCallMakerEmail(String callMakerEmail) {
-        this.callMakerEmail = callMakerEmail;
+
+
+    public String getCallReceiverUsername() {
+        return callReceiverUsername;
     }
 
-    public String getCallMakerName() {
-        return callMakerName;
+    public void setCallReceiverUsername(String callReceiverUsername) {
+        this.callReceiverUsername = callReceiverUsername;
     }
 
-    public void setCallMakerName(String callMakerName) {
-        this.callMakerName = callMakerName;
+    public String getCallReceiverName() {
+        return callReceiverName;
     }
 
-    public String getCallMakerUsername() {
-        return callMakerUsername;
+    public void setCallReceiverName(String callReceiverName) {
+        this.callReceiverName = callReceiverName;
     }
 
-    public void setCallMakerUsername(String callMakerUsername) {
-        this.callMakerUsername = callMakerUsername;
+    public String getRecentSummary() {
+        return recentSummary;
     }
 
-    public List<Summary> getSummaries() {
-        return summaries;
+    public void setRecentSummary(String recentSummary) {
+        this.recentSummary = recentSummary;
     }
 
-    public void setSummaries(List<Summary> summaries) {
-        this.summaries = summaries;
+    public String getRecentTime() {
+        return recentTime;
+    }
+
+    public void setRecentTime(String recentTime) {
+        this.recentTime = recentTime;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.dotcall_android.ui.settings;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,9 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.dotcall_android.LaunchScreen;
@@ -27,7 +28,6 @@ public class SettingsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
 
         SettingsViewModel settingsViewModel =
                 new ViewModelProvider(this).get(SettingsViewModel.class);
@@ -46,7 +46,7 @@ public class SettingsFragment extends Fragment {
         binding.logoutLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signout(view);
+                confirmSignout(view);
             }
         });
 
@@ -67,12 +67,25 @@ public class SettingsFragment extends Fragment {
         binding = null;
     }
 
-    private void signout(View v){
+    private void confirmSignout(View v) {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Sign Out")
+                .setMessage("Are you sure you want to sign out?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        signout();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void signout() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.signOut();
         UserManager.getInstance().clearCurrentUser();
         Toast.makeText(getContext(), "You have been Signed Out", Toast.LENGTH_LONG).show();
-        Intent i= new Intent(getContext(), LaunchScreen.class);
+        Intent i = new Intent(getContext(), LaunchScreen.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
     }
