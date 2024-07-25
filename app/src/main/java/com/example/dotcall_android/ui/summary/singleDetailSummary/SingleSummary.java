@@ -21,11 +21,15 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.dotcall_android.R;
+import com.example.dotcall_android.model.Summary;
+import com.example.dotcall_android.model.SummaryUser;
+import com.example.dotcall_android.singleton.DataManager;
 
 public class SingleSummary extends Fragment {
 
     private TextView textSummaryTitle;
     private TextView textSummary;
+    private TextView textSpeaker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,8 +44,19 @@ public class SingleSummary extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_single_summary, container, false);
 
+        textSpeaker = view.findViewById(R.id.textSummarySpeakername);
         textSummaryTitle = view.findViewById(R.id.textSummarySpeaker);
         textSummary = view.findViewById(R.id.textSummary);
+
+
+        Summary summary = DataManager.getSelectedSummary();
+        if (summary != null) {
+            textSummaryTitle.setText(summary.getSummaryTopic());
+            textSummary.setText(summary.getSummaryDetail());
+            textSpeaker.setText(summary.getCallReceiverName());
+        }
+
+
 
         // Set onClickListeners for share and copy buttons
         Button buttonShare = view.findViewById(R.id.buttonShare);
@@ -75,6 +90,7 @@ public class SingleSummary extends Fragment {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_summary);
 
         if (item.getItemId() == R.id.actionTranscription) {
+
             navController.navigate(R.id.action_nav_single_summary_to_nav_single_transcription);
             return true;
         } else if (item.getItemId() == R.id.actionRecording) {

@@ -1,42 +1,32 @@
 package com.example.dotcall_android.model;
 
-import com.example.dotcall_android.model.Summary;
+import java.util.List;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+public class SummaryUser {
 
-public class SummaryUser extends RealmObject {
-
-
-    private String callReceiverUsername;
-
+    private String callReceiverEmail;
     private String callReceiverName;
-
-
     private String recentSummary;
     private String recentTime;
-
-
+    private List<Summary> summary;
 
     public SummaryUser() {
     }
 
-    public SummaryUser(String callReceiverUsername, String callReceiverName, String recentSummary, String recentTime) {
-        this.callReceiverUsername = callReceiverUsername;
+    public SummaryUser(String callReceiverEmail, String callReceiverName, String recentSummary, String recentTime,List<Summary> summary) {
+        this.callReceiverEmail = callReceiverEmail;
         this.callReceiverName = callReceiverName;
         this.recentSummary = recentSummary;
         this.recentTime = recentTime;
+        this.summary = summary;
     }
 
-
-
-    public String getCallReceiverUsername() {
-        return callReceiverUsername;
+    public String getCallReceiverEmail() {
+        return callReceiverEmail;
     }
 
-    public void setCallReceiverUsername(String callReceiverUsername) {
-        this.callReceiverUsername = callReceiverUsername;
+    public void setCallReceiverEmail(String callReceiverEmail) {
+        this.callReceiverEmail = callReceiverEmail;
     }
 
     public String getCallReceiverName() {
@@ -61,5 +51,12 @@ public class SummaryUser extends RealmObject {
 
     public void setRecentTime(String recentTime) {
         this.recentTime = recentTime;
+    }
+
+    public List<Summary> getSummary() {
+        return summary;
+    }
+    public void setSummary(List<Summary> summary) {
+        this.summary = summary;
     }
 }

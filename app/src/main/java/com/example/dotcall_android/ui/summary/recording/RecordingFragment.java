@@ -53,7 +53,7 @@ public class RecordingFragment extends Fragment {
         mediaPlayer.setLooping(true); // Set looping to true
 
         try {
-            AssetFileDescriptor afd = requireContext().getResources().openRawResourceFd(R.raw.test_audio); // Replace with your MP3 resource
+            AssetFileDescriptor afd = requireContext().getResources().openRawResourceFd(R.raw.conversation); // Replace with your MP3 resource
             if (afd != null) {
                 mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
                 afd.close();

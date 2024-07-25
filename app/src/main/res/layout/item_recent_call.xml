@@ -55,7 +55,7 @@
 
                 android:maxLines="3"
                 android:text="@string/missed"
-                android:textColor="#C83737"
+                android:textColor="#3778C8"
                 android:textSize="15sp" />
         </LinearLayout>
 

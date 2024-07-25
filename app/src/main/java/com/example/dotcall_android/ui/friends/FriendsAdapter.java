@@ -15,16 +15,23 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.Toast;
 
 import com.example.dotcall_android.CallActivity;
 import com.example.dotcall_android.R;
-import com.example.dotcall_android.Summary;
+
+import com.example.dotcall_android.manager.CallLogManager;
+import com.example.dotcall_android.manager.SummaryManager;
 import com.example.dotcall_android.model.CallLog;
 import com.example.dotcall_android.model.Friend;
+import com.example.dotcall_android.model.Summary;
 import com.example.dotcall_android.model.SummaryUser;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -69,10 +76,48 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 
     private void performCall(Friend friend) {
 
+        CallLog newCallLog = new CallLog(friend.getName(), getCurrentTime() , "10 s", "Outgoing", "status");
+        CallLogManager.getInstance().addCallLog(newCallLog);
+
+        String summaryText= "This is the summary DW";
+        String topicText= "TITLE TITLE";
+        String transcriptionText= "This is the transcription of the call";
+
+        Summary summary1 = new Summary(
+                "maker@example.com",
+                "John Doe",
+                friend.getName(),
+                friend.getEmail(),
+                summaryText,
+                topicText,
+                getCurrentTime(),
+                transcriptionText
+        );
+
+
+        List<Summary> s1 = Arrays.asList(summary1);
+
+        SummaryUser summaryUser = new SummaryUser(
+                friend.getEmail(),
+                friend.getName(),
+                topicText,
+                getCurrentTime(),
+                s1
+        );
+
+        SummaryManager.getInstance().addSummaryUser(summaryUser);
+
+        Toast.makeText(context, "SumarryAdded", Toast.LENGTH_SHORT).show();
+
+
         Intent callIntent = new Intent(context, CallActivity.class);
         context.startActivity(callIntent);
     }
 
+    private String getCurrentTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return LocalDateTime.now().format(formatter);
+    }
 
     @Override
     public int getItemCount() {

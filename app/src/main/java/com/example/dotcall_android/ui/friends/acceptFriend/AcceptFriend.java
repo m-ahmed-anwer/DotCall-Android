@@ -3,6 +3,7 @@ package com.example.dotcall_android.ui.friends.acceptFriend;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,19 +50,16 @@ public class AcceptFriend extends Fragment {
         View view = inflater.inflate(R.layout.fragment_accept_friend, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.accept_friend_recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
 
         friendsList = new ArrayList<>();
-
 
         if (user != null) {
             String userEmail = user.getEmail();
             fetchAcceptFriends(userEmail);
         }
 
-
-        adapter = new AcceptFriendAdapter(friendsList);
+        adapter = new AcceptFriendAdapter(getContext(),getActivity(),friendsList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
         return view;

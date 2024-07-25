@@ -8,6 +8,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -57,27 +59,47 @@ public class FriendsFragment extends Fragment {
         requestQueue = Volley.newRequestQueue(requireContext());
     }
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         binding = FragmentFriendsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final RecyclerView friendsRecyclerView = binding.friends;
         friendsList = new ArrayList<>();
 
-
         if (user != null) {
             String userEmail = user.getEmail();
             fetchFriends(userEmail);
         }
 
-        adapter = new FriendsAdapter(getContext(), friendsList);
-        friendsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new FriendsAdapter(requireContext(), friendsList);
+        friendsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         friendsRecyclerView.setAdapter(adapter);
+
+        // Move the Switch initialization after setting the adapter
+        Switch userRecordSwitch = root.findViewById(R.id.user_record);
+
+        if (userRecordSwitch != null) {
+            userRecordSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b){
+                        Toast.makeText(requireContext(), "Switch is"+b, Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(requireContext(), "Switch is"+b, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+        } else {
+            Log.e("FriendsFragment", "user_record Switch is null");
+        }
 
         return root;
     }
+
+
 
     @Override
     public void onDestroyView() {
@@ -140,7 +162,6 @@ public class FriendsFragment extends Fragment {
                                 String email = friendObject.getString("email");
                                 friendsList.add(new Friend(name, email, username));
                             }
-                            Toast.makeText(getActivity(), "Friends Updated", Toast.LENGTH_SHORT).show();
                             adapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();

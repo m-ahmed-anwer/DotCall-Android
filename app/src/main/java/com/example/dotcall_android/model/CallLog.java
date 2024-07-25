@@ -1,11 +1,6 @@
 package com.example.dotcall_android.model;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-
-public class CallLog extends RealmObject {
-    @PrimaryKey
-    private int id;
+public class CallLog {
 
     private String name;
     private String time;
@@ -14,24 +9,15 @@ public class CallLog extends RealmObject {
     private String status;
 
     public CallLog() {
-        // Default constructor required by Realm
+        // Default constructor
     }
 
-    public CallLog(int id, String name, String time, String duration, String type, String status) {
-        this.id = id;
+    public CallLog(String name, String time, String duration, String type, String status) {
         this.name = name;
         this.time = time;
         this.duration = duration;
         this.type = type;
         this.status = status;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

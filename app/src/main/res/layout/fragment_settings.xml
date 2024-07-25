@@ -96,58 +96,6 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout5"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="45dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@drawable/settings_bg"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
-
-                        <TextView
-                            android:id="@+id/textView16"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="60dp"
-                            android:layout_marginTop="14dp"
-                            android:layout_marginBottom="14dp"
-                            android:text="@string/touch_id"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="1.0" />
-
-                        <ImageButton
-                            android:id="@+id/imageButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:background="#FEFFFF"
-                            android:importantForAccessibility="no"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_fingerprint" />
-
-                        <Switch
-                            android:id="@+id/switch1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="11dp"
-                            android:layout_marginEnd="28dp"
-                            android:layout_marginBottom="11dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -211,7 +159,7 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout6"
+                            android:id="@+id/constraintLayout7"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
 
@@ -268,7 +216,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
                             <TextView
                                 android:id="@+id/textView28"
@@ -324,13 +272,11 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="50dp"
                         android:layout_marginEnd="20dp"
-                        android:layout_marginBottom="100dp"
                         android:background="@drawable/settings_bg"
                         android:onClick="signout"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout5"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
                         tools:ignore="SpeakableTextPresentCheck">
 
                         <ImageButton
@@ -383,7 +329,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="31dp"
-                        android:layout_marginTop="13dp"
                         android:layout_marginBottom="13dp"
                         android:text="@string/authentication"
                         android:textColor="@color/black"

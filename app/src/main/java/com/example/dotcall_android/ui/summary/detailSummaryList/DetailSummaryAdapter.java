@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dotcall_android.R;
 import com.example.dotcall_android.model.Summary;
+import com.example.dotcall_android.singleton.DataManager;
 
 import java.util.List;
 
@@ -35,8 +36,10 @@ public class DetailSummaryAdapter extends RecyclerView.Adapter<DetailSummaryAdap
         Summary summary = summaries.get(position);
         holder.summaryTitle.setText(summary.getSummaryTopic());
         holder.summaryDetail.setText(summary.getSummaryDetail());
-        holder.itemView.setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_summaryDetail_to_singleSummary)
+        holder.itemView.setOnClickListener(v ->{
+                DataManager.setSelectedSummary(summary);
+                Navigation.findNavController(v).navigate(R.id.action_summaryDetail_to_singleSummary);
+            }
         );
     }
 

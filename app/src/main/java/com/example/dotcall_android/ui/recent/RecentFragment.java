@@ -18,13 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dotcall_android.R;
 import com.example.dotcall_android.databinding.FragmentRecentsBinding;
+import com.example.dotcall_android.manager.CallLogManager;
 import com.example.dotcall_android.model.CallLog;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class RecentFragment extends Fragment {
 
@@ -33,13 +30,11 @@ public class RecentFragment extends Fragment {
     private List<CallLog> callLogs;
     private TextView noRecentCallsTextView;
     private RecyclerView recentCallList;
-    private Realm realm;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -49,9 +44,7 @@ public class RecentFragment extends Fragment {
         recentCallList = binding.recentCall;
         noRecentCallsTextView = root.findViewById(R.id.no_recent_calls);
 
-        callLogs = new ArrayList<>();
-        //fetchCallLogsFromRealm();
-
+        callLogs = CallLogManager.getInstance().getCallLogs();
         adapter = new RecentAdapter(callLogs, requireContext());
         recentCallList.setLayoutManager(new LinearLayoutManager(getContext()));
         recentCallList.setAdapter(adapter);
@@ -65,9 +58,6 @@ public class RecentFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-        if (realm != null) {
-            realm.close();
-        }
     }
 
     @Override
@@ -98,7 +88,10 @@ public class RecentFragment extends Fragment {
     }
 
     private void clearCallLogs() {
-
+        CallLogManager.getInstance().clearCallLogs();
+        callLogs.clear();
+        adapter.notifyDataSetChanged();
+        updateEmptyState();
         Toast.makeText(getActivity(), "All recent calls cleared", Toast.LENGTH_SHORT).show();
     }
 
@@ -110,11 +103,5 @@ public class RecentFragment extends Fragment {
             noRecentCallsTextView.setVisibility(View.GONE);
             recentCallList.setVisibility(View.VISIBLE);
         }
-    }
-
-    private void fetchCallLogsFromRealm() {
-        RealmResults<CallLog> results = realm.where(CallLog.class).findAll();
-        callLogs.addAll(realm.copyFromRealm(results));
-        adapter.notifyDataSetChanged();
     }
 }
