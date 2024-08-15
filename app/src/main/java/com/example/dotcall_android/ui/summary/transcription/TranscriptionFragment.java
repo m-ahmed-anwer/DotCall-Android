@@ -35,11 +35,7 @@ public class TranscriptionFragment extends Fragment {
     private List<String> generateSampleData() {
         // Generate or fetch your data here
         return Arrays.asList(
-                "Transcription 1",
-                "Transcription 2",
-                "Transcription 3",
-                "Transcription 4",
-                "Transcription 5"
+                "Transcription 1"
         );
     }
 }

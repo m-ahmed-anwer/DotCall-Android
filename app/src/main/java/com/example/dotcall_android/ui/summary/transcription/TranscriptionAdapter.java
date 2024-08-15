@@ -32,9 +32,7 @@ public class TranscriptionAdapter extends RecyclerView.Adapter<TranscriptionAdap
     @Override
     public void onBindViewHolder(@NonNull TranscriptionViewHolder holder, int position) {
         String item = transcriptionItems.get(position);
-        holder.contentTranscription.setText(item); // Assuming the item is the transcription content
-        holder.timeTranscription.setText("Time " + (position + 1)); // Example time, you can adjust as needed
-        holder.transcriptionSpeaker.setText("00:0" + (position + 1)); // Example time format, adjust as needed
+        holder.contentTranscription.setText(item);
 
         holder.contentTranscription.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -54,14 +52,11 @@ public class TranscriptionAdapter extends RecyclerView.Adapter<TranscriptionAdap
 
     public static class TranscriptionViewHolder extends RecyclerView.ViewHolder {
         TextView contentTranscription;
-        TextView timeTranscription;
-        TextView transcriptionSpeaker;
 
         public TranscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
             contentTranscription = itemView.findViewById(R.id.content_transcription);
-            timeTranscription = itemView.findViewById(R.id.time_transcription);
-            transcriptionSpeaker = itemView.findViewById(R.id.transcription_speaker);
+
         }
     }
 }

@@ -15,6 +15,17 @@ import androidx.fragment.app.Fragment;
 
 import com.example.dotcall_android.CallActivity;
 import com.example.dotcall_android.R;
+import com.example.dotcall_android.manager.CallLogManager;
+import com.example.dotcall_android.manager.SummaryManager;
+import com.example.dotcall_android.model.CallLog;
+import com.example.dotcall_android.model.Summary;
+import com.example.dotcall_android.model.SummaryUser;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class FriendProfile extends Fragment {
 
@@ -56,10 +67,49 @@ public class FriendProfile extends Fragment {
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CallLog newCallLog = new CallLog(friendName, getCurrentTime() , "10 s", "Outgoing", "status");
+                CallLogManager.getInstance().addCallLog(newCallLog);
+
+                String summaryText= "This is the summary DW";
+                String topicText= "TITLE TITLE";
+                String transcriptionText= "This is the transcription of the call";
+
+                Summary summary1 = new Summary(
+                        "maker@example.com",
+                        "John Doe",
+                        friendName,
+                        friendEmail,
+                        summaryText,
+                        topicText,
+                        getCurrentTime(),
+                        transcriptionText
+                );
+
+
+                List<Summary> s1 = Arrays.asList(summary1);
+
+                SummaryUser summaryUser = new SummaryUser(
+                        friendEmail,
+                        friendName,
+                        topicText,
+                        getCurrentTime(),
+                        s1
+                );
+
+                SummaryManager.getInstance().addSummaryUser(summaryUser);
+
+                Toast.makeText(requireContext(), "SumarryAdded", Toast.LENGTH_SHORT).show();
+
                 startActivity(new Intent(getActivity(), CallActivity.class));
             }
         });
 
         return view;
     }
+
+    private String getCurrentTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return LocalDateTime.now().format(formatter);
+    }
+
 }
