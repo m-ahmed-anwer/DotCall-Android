@@ -108,7 +108,7 @@ public class SearchFriend extends Fragment {
         }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.POST, "https://dot-call-a7ff3d8633ee.herokuapp.com/friends/getAllFriends/" + text, null, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "https://dot-call-a7ff3d8633ee.herokuapp.com/friends/getAllFriends/" + text, jsonObject, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
